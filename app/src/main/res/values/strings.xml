@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ZupChallenge</string>
+    <string name="api_url">http://www.omdbapi.com/</string>
+</resources>
