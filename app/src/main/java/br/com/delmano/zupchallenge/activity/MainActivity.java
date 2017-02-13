@@ -44,22 +44,25 @@ public abstract class MainActivity extends AppCompatActivity {
 
     private ProgressDialog dialog;
 
+    @OnUi
     public void showDialog() {
         if (dialog != null && dialog.isShowing())
             return;
 
         dialog = ProgressDialog.show(this, "",
-                "Carregando . . .", true, false);
+                "Carregando . . .", true, true);
     }
 
+    @OnUi
     public void showDialog(String message) {
         if (dialog != null && dialog.isShowing())
             return;
 
         dialog = ProgressDialog.show(this, "",
-                message, true);
+                message, true, true);
     }
 
+    @OnUi
     public void hideDialog() {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();

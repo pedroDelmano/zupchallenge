@@ -19,6 +19,7 @@ import java.util.List;
 
 import br.com.delmano.zupchallenge.R;
 import br.com.delmano.zupchallenge.activity.HomeActivity;
+import br.com.delmano.zupchallenge.activity.MovieDetailsActivity_;
 import br.com.delmano.zupchallenge.model.Movie;
 
 /**
@@ -48,8 +49,16 @@ public class HomeFragmentPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        ImageView view = (ImageView) inflater.inflate(R.layout.home_pager_item, container, false);
-        Glide.with(activity).load(getItem(position).getPoster()).centerCrop().into(view);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.home_pager_item, container, false);
+        final Movie movie = getItem(position);
+        Glide.with(activity).load(movie.getPoster()).centerCrop().into((ImageView) view.findViewById(R.id.image));
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.needsReload();
+                MovieDetailsActivity_.intent(activity).movieId(movie.getImdbId()).start();
+            }
+        });
         container.addView(view);
         return view;
     }

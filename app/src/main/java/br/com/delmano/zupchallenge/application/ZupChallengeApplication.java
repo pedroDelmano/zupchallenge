@@ -6,6 +6,8 @@ import com.orm.SugarContext;
 
 import org.androidannotations.annotations.EApplication;
 
+import teaspoon.TeaSpoon;
+
 /**
  * Created by pedro.oliveira on 10/02/17.
  */
@@ -16,5 +18,6 @@ public class ZupChallengeApplication extends Application {
     public void onCreate() {
         super.onCreate();
         SugarContext.init(getApplicationContext());
+        TeaSpoon.initialize();
     }
 }

@@ -2,48 +2,39 @@ package br.com.delmano.zupchallenge.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import br.com.delmano.zupchallenge.R;
 import br.com.delmano.zupchallenge.activity.MainActivity;
-import br.com.delmano.zupchallenge.model.Movie;
 
 /**
  * Created by pedro.oliveira on 13/02/17.
  */
 
-@EViewGroup(R.layout.movie_item)
-public class MovieListItem extends LinearLayout {
+@EViewGroup(R.layout.detail_line_item)
+public class DetailLineItem extends LinearLayout {
 
     @ViewById
-    protected TextView movieTitle;
-
-    @ViewById
-    protected ImageView moviePoster;
+    protected TextView title, content;
 
     private MainActivity activity;
 
-    public MovieListItem(Context context) {
+    public DetailLineItem(Context context) {
         super(context);
         activity = (MainActivity) context;
     }
 
-    public MovieListItem(Context context, AttributeSet attrs) {
+    public DetailLineItem(Context context, AttributeSet attrs) {
         super(context, attrs);
         activity = (MainActivity) context;
     }
 
-    public MovieListItem bind(Movie item) {
-        Glide.with(activity).load(item.getPoster()).centerCrop().into(moviePoster);
-        movieTitle.setText(item.buildTitle());
-        return this;
+    public void bind(String titleText, String contentText) {
+        title.setText(titleText);
+        content.setText(contentText);
     }
-
 }

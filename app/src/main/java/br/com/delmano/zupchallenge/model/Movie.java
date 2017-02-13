@@ -243,4 +243,13 @@ public class Movie extends SugarRecord {
         this.title = title;
     }
 
+    public String buildTitle() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(title);
+        if (year != null && !year.isEmpty())
+            sb.append(" (").append(year).append(")");
+
+        return sb.toString();
+    }
+
 }

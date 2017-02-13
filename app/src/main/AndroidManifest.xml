@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.delmano.zupchallenge">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
     <application
         android:name=".application.ZupChallengeApplication_"
         android:allowBackup="true"
@@ -22,6 +28,10 @@
 
         <activity
             android:name=".activity.SearchActivity_"
+            android:label="" />
+
+        <activity
+            android:name=".activity.MovieDetailsActivity_"
             android:label="" />
 
         <meta-data

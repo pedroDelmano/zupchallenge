@@ -12,13 +12,18 @@ import android.widget.ListView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ViewById;
 
 import br.com.delmano.zupchallenge.R;
 import br.com.delmano.zupchallenge.adapter.MovieListAdapter;
 import br.com.delmano.zupchallenge.callback.ResponseCallback;
+import br.com.delmano.zupchallenge.model.Movie;
 import br.com.delmano.zupchallenge.model.Search;
 import br.com.delmano.zupchallenge.rest.model.RestError;
+import br.com.delmano.zupchallenge.utils.KeyboardUtils;
+import teaspoon.annotations.OnBackground;
+import teaspoon.annotations.OnUi;
 
 /**
  * Created by pedro.oliveira on 13/02/17.
@@ -68,13 +73,20 @@ public class SearchActivity extends MainActivity {
         searchClose.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
     }
 
-    private void doSearch(String query) {
+    @ItemClick(R.id.items)
+    void goToDetails(Movie movie) {
+        MovieDetailsActivity_.intent(this).movieId(movie.getImdbId()).start();
+    }
+
+
+    @OnBackground
+    protected void doSearch(String query) {
         showDialog("Buscando . . .");
+        KeyboardUtils.hideKeyboard(searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text), this);
         doRequest(rest.httpAPI().search(query, 1), new ResponseCallback<Search>() {
             @Override
             public void success(Search search) {
-                adapter.setMyItems(search.getSearchList());
-                adapter.notifyDataSetChanged();
+                updateUi(search);
                 hideDialog();
             }
 
@@ -85,6 +97,13 @@ public class SearchActivity extends MainActivity {
             }
         });
 
+    }
+
+    @OnUi
+    protected void updateUi(Search search) {
+        KeyboardUtils.hideKeyboard(searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text), this);
+        adapter.setMyItems(search.getSearchList());
+        adapter.notifyDataSetChanged();
     }
 
     @Override
