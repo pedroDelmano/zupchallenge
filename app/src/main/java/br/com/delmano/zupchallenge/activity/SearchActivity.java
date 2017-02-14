@@ -5,6 +5,8 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SearchView;
+import android.view.View;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,8 +40,16 @@ public class SearchActivity extends MainActivity {
     @ViewById
     protected ListView items;
 
+    @ViewById
+    protected View progress;
+
     @Bean
     protected MovieListAdapter adapter;
+
+    private String query;
+    private int page = 0;
+    private int totalItems = 0;
+    private boolean loading = false;
 
     @AfterViews
     void afterViews() {
@@ -50,15 +60,32 @@ public class SearchActivity extends MainActivity {
         adjustSearchView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (!query.isEmpty())
-                    doSearch(query);
+            public boolean onQueryTextSubmit(String text) {
+                if (!text.isEmpty()) {
+                    query = text;
+                    doSearch();
+                }
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
+            }
+        });
+        items.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (totalItemCount >= totalItems)
+                    return;
+
+                if (!loading && (firstVisibleItem + visibleItemCount + 2) >= totalItemCount) {
+                    doSearch();
+                }
             }
         });
     }
@@ -80,19 +107,24 @@ public class SearchActivity extends MainActivity {
 
 
     @OnBackground
-    protected void doSearch(String query) {
-        showDialog("Buscando . . .");
+    protected void doSearch() {
+        if (loading)
+            return;
+
+        loading = true;
+        showProgress();
+        page++;
         KeyboardUtils.hideKeyboard(searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text), this);
-        doRequest(rest.httpAPI().search(query, 1), new ResponseCallback<Search>() {
+        doRequest(rest.httpAPI().search(query, page), new ResponseCallback<Search>() {
             @Override
             public void success(Search search) {
                 updateUi(search);
-                hideDialog();
+                hideProgress();
             }
 
             @Override
             public void error(RestError restError) {
-                hideDialog();
+                hideProgress();
                 showError(restError);
             }
         });
@@ -100,7 +132,19 @@ public class SearchActivity extends MainActivity {
     }
 
     @OnUi
+    protected void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    @OnUi
+    protected void hideProgress() {
+        loading = false;
+        progress.setVisibility(View.GONE);
+    }
+
+    @OnUi
     protected void updateUi(Search search) {
+        totalItems = search.getTotalResults();
         KeyboardUtils.hideKeyboard(searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text), this);
         adapter.setMyItems(search.getSearchList());
         adapter.notifyDataSetChanged();
@@ -117,4 +161,5 @@ public class SearchActivity extends MainActivity {
         super.finish();
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
+
 }

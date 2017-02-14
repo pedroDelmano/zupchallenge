@@ -18,7 +18,7 @@ public class RestError implements Serializable {
 
     @SerializedName("Error")
     @Expose
-    private String message;
+    private String message = " Houve um problema. Tente mais tarde";
 
     public String getMessage() {
         return message;
