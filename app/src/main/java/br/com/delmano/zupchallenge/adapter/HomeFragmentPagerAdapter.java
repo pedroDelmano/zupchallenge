@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.orm.SugarRecord;
@@ -51,7 +52,9 @@ public class HomeFragmentPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.home_pager_item, container, false);
         final Movie movie = getItem(position);
-        Glide.with(activity).load(movie.getPoster()).centerCrop().into((ImageView) view.findViewById(R.id.image));
+        ImageView imageView = (ImageView) view.findViewById(R.id.image);
+        TextView textView = (TextView) view.findViewById(R.id.title);
+        Glide.with(activity).load(movie.getPoster()).centerCrop().into(imageView);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,6 +62,7 @@ public class HomeFragmentPagerAdapter extends PagerAdapter {
                 MovieDetailsActivity_.intent(activity).movieId(movie.getImdbId()).start();
             }
         });
+        textView.setText(movie.buildTitle());
         container.addView(view);
         return view;
     }

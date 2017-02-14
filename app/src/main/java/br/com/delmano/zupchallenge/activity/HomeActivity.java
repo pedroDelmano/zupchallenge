@@ -1,26 +1,19 @@
 package br.com.delmano.zupchallenge.activity;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import br.com.delmano.zupchallenge.R;
 import br.com.delmano.zupchallenge.adapter.HomeFragmentPagerAdapter;
-import br.com.delmano.zupchallenge.model.Movie;
 import me.crosswall.lib.coverflow.CoverFlow;
-import me.crosswall.lib.coverflow.core.PageItemClickListener;
 import me.crosswall.lib.coverflow.core.PagerContainer;
 
 /**
@@ -30,9 +23,6 @@ import me.crosswall.lib.coverflow.core.PagerContainer;
 @EActivity(R.layout.activity_home)
 @OptionsMenu(R.menu.home)
 public class HomeActivity extends MainActivity {
-
-    @ViewById
-    protected ListView myItems;
 
     @ViewById
     protected ViewPager viewPager;
