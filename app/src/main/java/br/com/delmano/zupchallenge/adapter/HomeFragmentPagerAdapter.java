@@ -65,7 +65,12 @@ public class HomeFragmentPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return myItems.size();
+        int count = myItems.size();
+        if (count == 0)
+            activity.adjustHide();
+        else
+            activity.adjutVisible();
+        return count;
     }
 
     @Override

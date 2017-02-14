@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -39,6 +40,9 @@ public class HomeActivity extends MainActivity {
     @ViewById
     protected PagerContainer pagerContainer;
 
+    @ViewById
+    protected TextView empty;
+
     @Bean
     protected HomeFragmentPagerAdapter pagerAdapter;
 
@@ -60,7 +64,6 @@ public class HomeActivity extends MainActivity {
                 .build();
 
         pagerContainer.setOverlapEnabled(true);
-
         viewPager.setAdapter(pagerAdapter);
     }
 
@@ -75,7 +78,7 @@ public class HomeActivity extends MainActivity {
         super.onResume();
         if (needsReload) {
             pagerAdapter.afterInject();
-            pagerAdapter.notifyDataSetChanged();
+            afterViews();
             needsReload = false;
         }
     }
@@ -84,4 +87,13 @@ public class HomeActivity extends MainActivity {
         needsReload = true;
     }
 
+    public void adjustHide() {
+        viewPager.setVisibility(View.GONE);
+        empty.setVisibility(View.VISIBLE);
+    }
+
+    public void adjutVisible() {
+        viewPager.setVisibility(View.VISIBLE);
+        empty.setVisibility(View.GONE);
+    }
 }

@@ -12,7 +12,7 @@ import retrofit2.http.Query;
 
 public interface ZupChallengeAPI {
 
-    @GET("/")
+    @GET("/?type=movie")
     Call<Search> search(@Query("s") String query, @Query("page") int page);
 
     @GET("/")

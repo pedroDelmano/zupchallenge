@@ -37,12 +37,15 @@
             android:visibility="gone" />
 
         <TextView
+            android:id="@+id/empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="Você não possui nenhum filme salvo.\nAdicione novos filme através da busca"
             android:textColor="@android:color/white"
-            android:text="Você não possui nenhum filme salvo. Ai"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

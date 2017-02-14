@@ -114,9 +114,17 @@ public class MovieDetailsActivity extends MainActivity {
             @Override
             public void error(RestError restError) {
                 hideDialog();
-                showError(restError);
+                if (inMyMovies())
+                    loadLocalMovie();
+                else
+                    showError(restError);
             }
         });
+    }
+
+    private void loadLocalMovie() {
+        movie = Select.from(Movie.class).where(Condition.prop("imdb_id").eq(movieId)).first();
+        adjustLayout();
     }
 
     @OnUi
